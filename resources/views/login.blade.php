@@ -77,10 +77,11 @@
   <div class="container">
     <h1 class="title">Login</h1>
     <form class="form-container" action="" method="post">
+      @csrf
       <p class="label">Email</p>
       <input class="input" type="text" name="email" id="email">
       <p class="label">Password</p>
-      <input class="input" type="text" name="password" id="password">
+      <input class="input" type="password" name="password" id="password">
       <button class="button" type="submit">Login</button>
     </form>
     <a href="/register">Create Account</a>

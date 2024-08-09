@@ -78,12 +78,14 @@
     <h1 class="title">Register</h1>
     <form class="form-container" action="{{url("register")}}" method="post">
       @csrf
-      <p class="label">Email</p>
+      <p class="label">Name</p>
       <input class="input" type="text" name="name" id="name">
+      <p class="label">Email</p>
+      <input class="input" type="email" name="email" id="email">
       <p class="label">Password</p>
-      <input class="input" type="text" name="email" id="email">
+      <input class="input" type="password" name="password" id="password">
       <p class="label">Confirm Password</p>
-      <input class="input" type="text" name="password" id="password">
+      <input class="input" type="password" name="password_confirmation" id="password_confirmation">
       <button class="button" type="submit">Register</button>
     </form>
   </div>
