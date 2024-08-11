@@ -26,8 +26,8 @@ class UserController extends Controller {
     return response()->json($this->userService->register($request));
   }
 
-  public function getAllUsers(Request $request) {
-
+  public function getAllUsers() {
+    return response()->json($this->userService->getAllUsers());
   }
 
 }

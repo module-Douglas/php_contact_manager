@@ -35,7 +35,7 @@ class AuthController extends Controller
           $user = Auth::user();
           session(['user_id' => $user->id, 'user_name' => $user->name]);
 
-          return redirect()->intended('dashboard');
+          return redirect()->intended('show-contacts');
       }
 
       return redirect()->back()->withErrors(['email' => 'As credenciais fornecidas estão incorretas.'])->withInput();

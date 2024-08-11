@@ -33,4 +33,8 @@ class UserService {
 
   }
 
+  function getAllUsers() {
+    return $this->user->all();
+  }
+
 }

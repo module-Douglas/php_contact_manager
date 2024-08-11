@@ -5,32 +5,44 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Rules\EmailOrPhoneRequired;
 
 class ContactController extends Controller
 {
-    public function index()
-    {
-        $contacts = Auth::user()->contacts;
-        return view('contacts.index', compact('contacts'));
-    }
+  public function showContacts()
+  {
+      $user = Auth::user();
+      if (!$user) {
+          return redirect()->route('login');
+      }
+
+      $contacts = $user->contacts;
+      return view('showContacts', compact('contacts'));
+  }
 
     public function create()
     {
         return view('contacts.create');
     }
 
-    public function store(Request $request)
+     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => ['nullable', 'string', 'email', 'max:255', new EmailOrPhoneRequired],
-            'phone' => ['nullable', 'string', 'max:15', new EmailOrPhoneRequired],
+            'email' => 'nullable|string|email|max:255',
+            'phone' => 'nullable|string|max:15',
         ]);
 
-        Auth::user()->contacts()->create($request->all());
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
-        return redirect()->route('contacts.index');
+        $contact = $user->contacts()->create($request->all());
+
+        return response()->json(
+          ['success' => true,
+        'contact' => $contact,]
+        );
     }
 
     public function edit(Contact $contact)
@@ -42,18 +54,24 @@ class ContactController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => ['nullable', 'string', 'email', 'max:255', new EmailOrPhoneRequired],
-            'phone' => ['nullable', 'string', 'max:15', new EmailOrPhoneRequired],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:15'],
         ]);
 
+        
         $contact->update($request->all());
 
-        return redirect()->route('contacts.index');
+        return response()->json(
+          ['success' => true,
+        'contact' => $contact,]
+        );
     }
 
     public function destroy(Contact $contact)
     {
         $contact->delete();
-        return redirect()->route('contacts.index');
+        return response()->json([
+          'success' => true,
+      ]);
     }
 }
