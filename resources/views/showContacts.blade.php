@@ -1,103 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacts</title>
-    <style>
-        /* Estilos para o modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacts</title>
+  <style>
+    body {
+    font-family: 'JetBrains Mono';
+    background-color: #181818;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin: 0;
+    color: #aaaaaa;
+  }
 
-        .modal.show {
-            display: block;
-            opacity: 1;
-        }
+  .button {
+    font-family: 'JetBrains Mono';
+    font-size: 20px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #181818;
+    color: #92ac68;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+  }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transform: translateY(-50px);
-            transition: transform 0.3s ease;
-        }
+  .button:active {
+    transform: scale(0.95);
+    background-color: #2a2a2a;
+  }
 
-        .modal.show .modal-content {
-            transform: translateY(0);
-        }
+    /* Estilos para o modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+  .modal.show {
+    display: block;
+    opacity: 1;
+  }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transform: translateY(-50px);
+    transition: transform 0.3s ease;
+  }
+
+  .modal.show .modal-content {
+    transform: translateY(0);
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Contacts</h1>
-        <button id="openModalBtn" class="btn btn-primary">Add Contact</button>
-        <ul id="contact-list">
-            @foreach ($contacts as $contact)
-                <li id="contact-{{ $contact->id }}">
-                    {{ $contact->name }} - {{ $contact->email }} - {{ $contact->phone }}
-                    <button class="edit-contact-btn" data-id="{{ $contact->id }}" data-name="{{ $contact->name }}" data-email="{{ $contact->email }}" data-phone="{{ $contact->phone }}">Edit</button>
-                    <form class="delete-contact-form" data-id="{{ $contact->id }}" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                </li>
-            @endforeach
-        </ul>
-    </div>
+  <div class="container">
+    <h1>Contacts</h1>
+    <button id="openModalBtn" class="button">+ Add Contact</button>
+    <ul id="contact-list">
+      @foreach ($contacts as $contact)
+        <li id="contact-{{ $contact->id }}">
+          {{ $contact->name }} - {{ $contact->email }} - {{ $contact->phone }}
+          <button class="edit-contact-btn button" data-id="{{ $contact->id }}" data-name="{{ $contact->name }}" data-email="{{ $contact->email }}" data-phone="{{ $contact->phone }}">Edit</button>
+          <form class="delete-contact-form" data-id="{{ $contact->id }}" style="display:inline;">
+            @csrf
+            @method('DELETE')
+            <button class="button" type="submit">Delete</button>
+          </form>
+        </li>
+      @endforeach
+    </ul>
+  </div>
 
-    <!-- Modal -->
-    <div id="addContactModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h5 id="modal-title">Add Contact</h5>
-            <form id="add-contact-form">
-                <input type="hidden" id="contact-id">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input type="text" class="form-control" id="phone" name="phone">
-                </div>
-                <button type="submit" class="btn btn-primary">Save</button>
-            </form>
+  <!-- Modal -->
+  <div id="addContactModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h5 id="modal-title">Add Contact</h5>
+      <form id="add-contact-form">
+        <input type="hidden" id="contact-id">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" required>
         </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="text" class="form-control" id="phone" name="phone">
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
     </div>
+  </div>
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
