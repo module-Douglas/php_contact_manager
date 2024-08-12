@@ -12,7 +12,7 @@ class AuthController extends Controller
   public function session() {
     if (Auth::check()) {
       $user = Auth::user();
-      return redirect('/register');
+      return redirect('/show-contacts');
   } else {
       return redirect('/login');
   }
@@ -47,6 +47,6 @@ class AuthController extends Controller
       $request->session()->invalidate();
       $request->session()->regenerateToken();
 
-      return redirect('/login');
+      return redirect('/');
   }
 }

@@ -76,7 +76,7 @@
 
   <div class="container">
     <h1 class="title">Login</h1>
-    <form class="form-container" action="" method="post">
+    <form class="form-container" action="{{ url('login') }}" method="post">
       @csrf
       <p class="label">Email</p>
       <input class="input" type="text" name="email" id="email">
