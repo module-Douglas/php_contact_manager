@@ -2,7 +2,7 @@
 
 This project is a contact manager built with PHP and Laravel. It allows users to store and manage their contacts efficiently. 
 
-## Installation
+## Running
 
 To run this project, follow the steps below:
 
@@ -23,7 +23,7 @@ To run this project, follow the steps below:
 
 ## Docker Compose
 
-This project also includes a `docker-compose.yml` file, allowing you to run the application using Docker. To do so, follow these steps:
+This project also includes a `docker-compose.yaml` file, allowing you to run the application using Docker. To do so, follow these steps:
 
 1. Make sure you have Docker installed on your machine.
 2. Navigate to the project directory.
