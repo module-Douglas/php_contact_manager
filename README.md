@@ -11,7 +11,7 @@ To run this project, follow the steps below:
   ```
   composer install
   ```
-3. Create a copy of the `.env.example` file and rename it to `.env`. Update the necessary configuration values such as database credentials.
+3. Update the necessary configuration values such as database credentials at `.env`.
 4. Run the database migrations to create the necessary tables:
   ```
   php artisan migrate
@@ -29,8 +29,8 @@ This project also includes a `docker-compose.yml` file, allowing you to run the 
 2. Navigate to the project directory.
 3. Run the following command to start the containers:
   ```
-  docker-compose up -d
+  docker-compose up --build -d
   ```
-4. Access the application by visiting `http://localhost` in your web browser.
+4. Access the application by visiting `http://localhost:8000` in your web browser.
 
 That's it! You now have the Contact Manager up and running. Feel free to explore its features and manage your contacts effortlessly.
