@@ -19,7 +19,7 @@
     }
 
     .container {
-      background-color: #212121;
+      background-color: #181818;
       border-radius: 8%;
       width: 400px;
       height: 600px;
@@ -32,19 +32,22 @@
     .title {
       color: #aaaaaa;
       font-size: 24px;
+      margin-bottom: 40px;
     }
 
     .input {
-      border-radius: 10px;
-      background-color: #181818;
-      width: 300px;
-      height: 60px;
+      border-radius: 5px;
+      background-color: #212121;
+      width: 400px;
+      height: 40px;
       color: #ffffff;
       font-size: 15px;
-      text-align: center;
+      text-align: left;
+      padding-left: 10px;
       border: none;
       outline: none;
       box-shadow: none;
+      font-family: 'JetBrains Mono';
     }
 
     .label {
@@ -54,20 +57,51 @@
       margin-top: 10px;
     }
 
-    .form-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
     .button {
+      font-family: 'JetBrains Mono';
+      font-size: 20px;
       margin-top: 20px;
       padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
+      background-color: #181818;
+      color: #92ac68;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      transition: transform 0.1s ease, background-color 0.1s ease;
+    }
+
+    .button:active {
+      transform: scale(0.95);
+      background-color: #2a2a2a;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .containertwo {
+      width: 400px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    ::-ms-reveal {
+      filter: invert(100%);
+    }
+
+    .error-message {
+      display: none;
+      color: #c3352e;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .error-message.visible {
+      display: block;
     }
   </style>
 </head>
@@ -76,16 +110,27 @@
 
   <div class="container">
     <h1 class="title">Register</h1>
-    <form class="form-container" action="{{url("register")}}" method="post">
+    @if (session('error'))
+      <div id="error-message" class="error-message visible">{{ session('error') }}</div>
+    @else
+      <div id="error-message" class="error-message"></div>
+    @endif
+    <form class="form-group" action="{{url("register")}}" method="post">
       @csrf
       <p class="label">Name</p>
       <input class="input" type="text" name="name" id="name">
       <p class="label">Email</p>
       <input class="input" type="email" name="email" id="email">
-      <p class="label">Password</p>
-      <input class="input" type="password" name="password" id="password">
-      <p class="label">Confirm Password</p>
-      <input class="input" type="password" name="password_confirmation" id="password_confirmation">
+      <div class="containertwo">
+        <div>
+          <p class="label">Password</p>
+          <input style="width: 180px" class="input" type="password" name="password" id="password">
+        </div>
+        <div>
+          <p class="label">Confirm Password</p>
+          <input style="width: 180px" class="input" type="password" name="password_confirmation" id="password_confirmation">
+        </div>
+      </div>
       <button class="button" type="submit">Register</button>
     </form>
   </div>

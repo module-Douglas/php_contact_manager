@@ -10,68 +10,58 @@ class ContactController extends Controller
 {
   public function showContacts()
   {
-      $user = Auth::user();
-      if (!$user) {
-          return redirect("/login");
-      }
-
-      $contacts = $user->contacts;
-      return view('showContacts', compact('contacts'));
-  }
-
-    public function create()
-    {
-        return view('contacts.create');
+    $user = Auth::user();
+    if (!$user) {
+      return redirect("/login");
     }
+
+    $contacts = $user->contacts;
+    return view('showContacts', compact('contacts'));
+  }
 
      public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|string|email|max:255',
-            'phone' => 'nullable|string|max:15',
-        ]);
+      $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'nullable|string|email|max:255',
+        'phone' => 'nullable|string|max:15',
+      ]);
 
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+      $user = Auth::user();
+      if (!$user) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+      }
 
-        $contact = $user->contacts()->create($request->all());
+      $contact = $user->contacts()->create($request->all());
 
-        return response()->json(
-          ['success' => true,
+      return response()->json(
+        ['success' => true,
         'contact' => $contact,]
-        );
-    }
-
-    public function edit(Contact $contact)
-    {
-        return view('contacts.edit', compact('contact'));
+      );
     }
 
     public function update(Request $request, Contact $contact)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => ['nullable', 'string', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:15'],
-        ]);
+      $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => ['nullable', 'string', 'email', 'max:255'],
+        'phone' => ['nullable', 'string', 'max:15'],
+      ]);
 
-        
-        $contact->update($request->all());
+      
+      $contact->update($request->all());
 
-        return response()->json(
-          ['success' => true,
+      return response()->json(
+        ['success' => true,
         'contact' => $contact,]
-        );
+      );
     }
 
     public function destroy(Contact $contact)
     {
-        $contact->delete();
-        return response()->json([
-          'success' => true,
-      ]);
+      $contact->delete();
+      return response()->json([
+        'success' => true,
+    ]);
     }
 }

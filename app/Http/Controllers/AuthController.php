@@ -13,40 +13,38 @@ class AuthController extends Controller
     if (Auth::check()) {
       $user = Auth::user();
       return redirect('/show-contacts');
-  } else {
+    } else {
       return redirect('/login');
-  }
+    }
   }
 
   public function login(Request $request)
   {
-      // Validação dos campos
-      $validator = Validator::make($request->all(), [
-          'email' => 'required|string|email|max:255',
-          'password' => 'required|string|min:8',
-      ]);
+    $validator = Validator::make($request->all(), [
+      'email' => 'required|string|email|max:255',
+      'password' => 'required|string|min:8',
+    ]);
 
-      if ($validator->fails()) {
-          return redirect()->back()->withErrors($validator)->withInput();
-      }
+    if ($validator->fails()) {
+      return redirect('login')->with('error', 'Invalid credentials. Please try again.');
+    }
 
-      $credentials = $request->only('email', 'password');
-      if (Auth::attempt($credentials)) {
-          $user = Auth::user();
-          session(['user_id' => $user->id, 'user_name' => $user->name]);
+    $credentials = $request->only('email', 'password');
+    if (Auth::attempt($credentials)) {
+      $user = Auth::user();
+      session(['user_id' => $user->id, 'user_name' => $user->name]);
+      return redirect()->intended('show-contacts');
+    }
 
-          return redirect()->intended('show-contacts');
-      }
-
-      return redirect()->back()->withErrors(['email' => 'As credenciais fornecidas estão incorretas.'])->withInput();
+    return redirect('login')->with('error', 'Invalid credentials. Please try again.');
   }
 
   public function logout(Request $request)
   {
-      Auth::logout();
-      $request->session()->invalidate();
-      $request->session()->regenerateToken();
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-      return redirect('/');
+    return redirect('/');
   }
 }
